@@ -8,19 +8,19 @@ CREATE TABLE departments (
 );
 
 CREATE TABLE role (
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    job_title VARCHAR(30) NOT NULL,
-    department_id INTEGER AUTO_INCREMENT NOT NULL,
-    salary VARCHAR(30) NOT NULL
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(30) NOT NULL,
+    salary VARCHAR(30) NOT NULL,
+    department_id INT NOT NULL,
+    FOREIGN KEY(department_id) REFERENCES departments(id)
 );
 
 CREATE TABLE employee (
-    employee_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    job_title VARCHAR(30) NOT NULL,
-    departments VARCHAR(30) NOT NULL,
-    salaries DECIMAL(10,2) NOT NULL,
-    managers VARCHAR(30) NOT NULL
-
+    role_id INT NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES role(id),
+    manager_id INT,
+    FOREIGN KEY (manager_id) REFERENCES employee(id)
 )

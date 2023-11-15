@@ -48,7 +48,7 @@ const mainPrompt = () => {
             addADepartment();
         }
 
-        if (choices === 'Add a role'){
+        if (choices === 'Add a Role'){
             addARole();
         }
 
@@ -170,7 +170,7 @@ const addARole = () => {
             type: 'input',
             message: 'Enter the department ID for the new role:',
             validate: (input) => {
-                // You might want to add more validation for department ID
+             
                 return !isNaN(input) || 'Please enter a valid department ID.';
             },
         },
@@ -179,7 +179,7 @@ const addARole = () => {
             type: 'input',
             message: 'Enter the salary for the new role:',
             validate: (input) => {
-                // You might want to add more validation for salary
+              
                 return !isNaN(input) || 'Please enter a valid salary.';
             },
         },
@@ -187,13 +187,13 @@ const addARole = () => {
     .then((answers) => {
         const { roleName, departmentId, salary } = answers;
 
-        const query = 'INSERT INTO role (job_title, department_id, salary) VALUES (?, ?, ?)';
+        const query = 'INSERT INTO role (title, department_id, salary) VALUES (?, ?, ?)';
         connection.query(query, [roleName, departmentId, salary], (err, result) => {
             if (err) throw err;
 
             console.log(`Role "${roleName}" added successfully.`);
 
-            // After adding the role, prompt the user again
+            
             mainPrompt();
         });
     });
@@ -221,14 +221,14 @@ const addADepartment = () => {
     .then((answers) => {
         const { departmentName } = answers;
 
-        // Insert the new department into the 'departments' table
+       
         const query = 'INSERT INTO departments (department_name) VALUES (?)';
         connection.query(query, [departmentName], (err, result) => {
             if (err) throw err;
 
             console.log(`Department "${departmentName}" added successfully.`);
 
-            // After adding the department, prompt the user again
+           
             mainPrompt();
         });
     });
@@ -238,7 +238,7 @@ const addADepartment = () => {
 const addAnEmployee = () => {
     inquirer.prompt([
         {
-            name: 'firstName',
+            name: 'first_name',
             type: 'input',
             message: 'Enter the first name of the new employee:',
             validate: (input) => {
@@ -249,7 +249,7 @@ const addAnEmployee = () => {
             },
         },
         {
-            name: 'lastName',
+            name: 'last_name',
             type: 'input',
             message: 'Enter the last name of the new employee:',
             validate: (input) => {
@@ -260,40 +260,79 @@ const addAnEmployee = () => {
             },
         },
         {
-            name: 'roleId',
+            name: 'role_id',
             type: 'input',
-            message: 'Enter the role ID for the new employee:',
+            message: 'Enter the roleId for the new employee:',
             validate: (input) => {
-                
-                return !isNaN(input) || 'Please enter a valid role ID.';
+                return input === '' || !isNaN(input) || 'Please enter a valid manager ID or leave it empty.';
             },
         },
         {
-            name: 'managerId',
+            name: 'manager_id',
             type: 'input',
-            message: 'Enter the manager ID for the new employee (optional):',
+            message: 'Enter the manager id for the new employee (optional):',
             validate: (input) => {
-                // You might want to add more validation for manager ID
                 return input === '' || !isNaN(input) || 'Please enter a valid manager ID or leave it empty.';
             },
         },
     ])
     .then((answers) => {
-        const { firstName, lastName, roleId, managerId } = answers;
+        const { first_name, last_name, role_id, manager_id } = answers;
 
         const query = 'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)';
-        connection.query(query, [firstName, lastName, roleId, managerId || null], (err, result) => {
+        connection.query(query, [first_name, last_name, role_id, manager_id || null], (err, result) => {
             if (err) throw err;
 
-            console.log(`Employee "${firstName} ${lastName}" added successfully.`);
+            console.log(`Employee "${first_name} ${last_name}" added successfully.`);
 
-            // After adding the employee, prompt the user again
+        
             mainPrompt();
         });
     });
 };
 
+const updateEmployeeRole = () => {
+    // Get the list of employees for user to choose from
+    const employeeQuery = 'SELECT id, CONCAT(first_name, " ", last_name) AS employee_name FROM employee';
+    connection.query(employeeQuery, (err, employeeResults) => {
+        if (err) throw err;
 
+        const employeeChoices = employeeResults.map((employee) => ({
+            name: employee.employee_name,
+            value: employee.id,
+        }));
+
+        inquirer.prompt([
+            {
+                name: 'employeeId',
+                type: 'list',
+                message: 'Select the employee whose role you want to update:',
+                choices: employeeChoices,
+            },
+            {
+                name: 'newRoleId',
+                type: 'input',
+                message: 'Enter the new role ID for the employee:',
+                validate: (input) => {
+                    return !isNaN(input) || 'Please enter a valid role ID.';
+                },
+            },
+        ])
+        .then((answers) => {
+            const { employeeId, newRoleId } = answers;
+
+            const updateQuery = 'UPDATE employee SET role_id = ? WHERE id = ?';
+            connection.query(updateQuery, [newRoleId, employeeId], (updateErr, updateResult) => {
+                if (updateErr) throw updateErr;
+
+                console.log(`Employee's role updated successfully.`);
+
+                // Return to the main prompt
+                mainPrompt();
+            });
+        });
+    });
+};
 
 
 
