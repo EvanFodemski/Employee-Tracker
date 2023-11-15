@@ -16,14 +16,15 @@ VALUES
 ('Unsigned', 3, 0),
 ('Wanna be like Mike', 4, 10000000000000000000);
 
-INSERT INTO employee( first_name, last_name, role_id, manager_id)
+INSERT INTO employee(first_name, last_name, role_id, manager_id, salary)
 VALUES 
-( 'Steph', 'Curry',1,NULL  ),
-('Kevin', 'Durant',1, 1 ),
-( 'Shaquille', 'Oneill',1,2 ),
-( 'Dirk', 'Nowitzki',1,3 ),
-( 'Allen', 'Iverson',1,4 ),
-( 'Tyler', 'Hero',2, NULL ),
-( 'Kawhi', 'Leonard',3, 5 ),
-( 'Michael', 'Jordan',4, NULL ),
-( 'Kobe', 'Bryant',4, NULL );
+('Steph', 'Curry', 1, NULL, 800008),
+('Kevin', 'Durant', 1, 1, 124134),
+('Shaquille', 'ONeill', 1, 2, 83493),
+('Dirk', 'Nowitzki', 1, 3, 1234124),
+('Allen', 'Iverson', 1, 4, 125631),
+('Tyler', 'Hero', 2, NULL, 124513),
+('Kawhi', 'Leonard', 3, 5, 8214354),
+('Michael', 'Jordan', 4, NULL, 14351322),
+('Kobe', 'Bryant', 4, NULL, 110000);
+

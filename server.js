@@ -17,13 +17,7 @@ const mainPrompt = () => {
                 'Add a Role',
                 'Add an Employee',
                 'Update Employee Role',
-                'Update Employee Managers',
-                'View Employees by Manager',
-                'View Employees by department',
-                'Delete Department',
-                'Delete Role',
-                'Delete Employee',
-                'View total Utilized budget of a department'
+                
 
 
             ]
@@ -59,33 +53,6 @@ const mainPrompt = () => {
             updateEmployeeRole();
         }
 
-        if(choices ==='Update Employee Managers'){
-            updateEmployeeManagers();
-        }
-
-        if(choices === 'View Employees by Manager'){
-            viewEmployeebyManager();
-        }
-
-        if(choices ==='View Employees by department'){
-            viewEmployeesbyDepartment();
-        }
-
-        if(choices === 'Delete Department'){
-            deleteDepartment();
-        }
-
-        if(choices === 'Delete Role'){
-            deleteRole();
-        }
-
-        if(choices === 'Delete Employee'){
-            deleteEmployee();
-        }
-
-        if(choices === 'View total Utilized budget of a department'){
-            totalBudget();
-        }
     })
     
     
