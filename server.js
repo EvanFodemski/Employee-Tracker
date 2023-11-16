@@ -17,9 +17,6 @@ const mainPrompt = () => {
                 'Add a Role',
                 'Add an Employee',
                 'Update Employee Role',
-                
-
-
             ]
         }
     ])
@@ -99,7 +96,8 @@ const viewAllRoles = () => {
 
 
 const viewAllEmployees = () => {
-    const query = 'SELECT * FROM employee';
+    const query = `SELECT employee.id, employee.first_name, employee.last_name, role.title, departments.department_name AS department, role.salary, CONCAT(e.first_name, ' ', e.last_name) AS Manager
+     FROM employee LEFT JOIN role on employee.role_id=role.id LEFT JOIN departments on role.department_id=departments.id LEFT JOIN employee e on employee.manager_id=e.id `;//Title, role department, employee/role salary, manager name
 
     connection.query(query, (err, results) => {
         if (err) throw err;
